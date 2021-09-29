@@ -8,15 +8,34 @@ import './App.css';
 //   title: 'React',
 // };
 
-function getTitle(title) {
-  return title;
-}
-//Practice more complex JavaScript data types
+// function getTitle(title) {
+//   return title;
+// }
+// //Practice more complex JavaScript data types
 
-function getNumbers(array) {
-  return array
+// function getNumbers(array) {
+//   return array
 
-}
+// }
+
+const list = [
+  {
+    title: 'React',
+    url: 'https://reactjs.org/',
+    author: "Jordan Walke",
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://redux.js.org',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  },
+];
 
 function App() {
 
@@ -24,17 +43,31 @@ function App() {
   return (
     <div>
       <h1>
-        Hello {getTitle('React')}
+        My Hacker Stories
+        {/* Hello {getTitle('React')} */}
         {/* {welcome.greeting} {welcome.title} */}
         {/* everything in curly braces in JSX can be used for JavaScript expressions (function execution) */}
      </h1>
 
-     <h2>
-       Lucky Numbers: {getNumbers([14, 21, 9, 19, 0])}
-     </h2>
 
       <label htmlFor="search"> Search: </label>
       <input id="search" type="text" />
+
+      <hr/>
+      {/* render list here */}
+      {list.map(function(item) {
+        return <div key={item.objectID}> 
+                <span>
+                  <a href={item.url}> {item.title} </a>
+                </span>
+
+                <span> {item.author} </span>
+                <span> {item.num_comments} </span>
+                <span> {item.points} </span>
+                    
+              </div>
+      })}
+
     </div>
   );
 }

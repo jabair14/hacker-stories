@@ -37,7 +37,7 @@ const list = [
   },
 ];
 
-function App() {
+const App = () => {
   
   
   return (
@@ -63,7 +63,7 @@ function App() {
 }
 
 // rendering component list 
-function List() {
+const List = () => {
   return (
     <ul>
       {list.map(function(item) {

@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 // const title = "React"
@@ -38,9 +39,12 @@ const App = () => {
       objectID: 1,
     },
   ];
+
+  const [searchTerm, setSearchTerm] = useState('');
   
   const handleChange = event => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
   
   
@@ -60,6 +64,10 @@ const App = () => {
         type="text" 
         onChange={handleChange}
       />
+
+      <p>
+        searching for <strong>{searchTerm}</strong>
+      </p>
 
 
       <hr/>

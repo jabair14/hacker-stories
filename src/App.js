@@ -5,13 +5,14 @@ import './App.css';
 
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = React.useState(
-    localStorage.getItem(key) || initialState 
+    localStorage.getItem(key) || initialState
   );
+
   React.useEffect(() => {
     localStorage.setItem(key, value);
-  }, [value, key]); 
+  }, [value, key]);
 
-  return [value, setValue]
+  return [value, setValue];
 };
 
 const App = () => {
@@ -39,11 +40,8 @@ const App = () => {
     'React'
   );
 
-
   const handleSearch = event => {
     setSearchTerm(event.target.value);
-
-    // localStorage.setItem('search', event.target.value);
   };
 
   const searchedStories = stories.filter(story =>
@@ -54,7 +52,15 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        isFocused
+        onInputChange={handleSearch}
+      >
+        <strong>Search:</strong>
+        </InputWithLabel>
 
       <hr />
 
@@ -63,37 +69,36 @@ const App = () => {
   );
 };
 
-const Search = ({ search, onSearch }) => (
+const InputWithLabel = ({
+  id,
+  value,
+  type = 'text',
+  onInputChange,
+  isFocused,
+  children,
+}) => {
+  const inputRef = React.useRef();
+
+  React.useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
+  return (
   <>
-    <label  key= '1' htmlFor="search">Search: </label>
-    <InputWithLabel
-      id="search"
-      label="Search"
-      type="text"
-      value={search}
-      onInputChange={onSearch}
+    <label htmlFor={id}>{children}</label>
+    &nbsp;
+    <input
+      ref={inputRef}
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+      autoFocus={isFocused}
     />
   </>
-);
-
-const InputWithLabel = ({ 
-  id, 
-  label, 
-  value, 
-  type = "text",
-  onInputChange,
-}) => (
-  <>
-    <label htmlFor={id}> {label} </label>
-      <input 
-        id={id}
-        type={type}
-        value={value}
-        onChange={onInputChange}
-      />
-  </>
-)
-
+  );
+};
 const List = ({ list }) =>
   list.map(item => <Item key={item.objectID} item={item} />);
 

@@ -2,32 +2,6 @@
 import React from 'react';
 import './App.css';
 
-// const initialStories = [
-//   {
-//     title: 'React',
-//     url: 'https://reactjs.org/',
-//     author: 'Jordan Walke',
-//     num_comments: 3,
-//     points: 4,
-//     objectID: 0,
-//   },
-//   {
-//     title: 'Redux',
-//     url: 'https://redux.js.org/',
-//     author: 'Dan Abramov, Andrew Clark',
-//     num_comments: 2,
-//     points: 5,
-//     objectID: 1,
-//   },
-// ];
-
-// const getAsyncStories = () =>
-//   new Promise(resolve =>
-//     setTimeout(
-//       () => resolve({ data: { stories: initialStories } }),
-//       2000
-//     )
-//   );
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const useSemiPersistentState = (key, initialState) => {
@@ -86,9 +60,8 @@ const App = () => {
     { data: [], isLoading: false, isError: false }
   );
 
-  React.useEffect(() => {
-
-    if(!searchTerm) return;
+  const handleFetchStories = React.useCallback(() => {
+    if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
@@ -100,10 +73,14 @@ const App = () => {
           payload: result.hits,
         });
       })
-      .catch(() => 
+      .catch(() =>
         dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-        );
+      );
   }, [searchTerm]);
+
+  React.useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
 
   const handleRemoveStory = item => {
     dispatchStories({
@@ -136,10 +113,7 @@ const App = () => {
       {stories.isLoading ? (
         <p>Loading ...</p>
       ) : (
-        <List
-          list={stories.data}
-          onRemoveItem={handleRemoveStory}
-        />
+        <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
     </div>
   );

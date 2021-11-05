@@ -1,7 +1,46 @@
 // import { promised } from 'q';
 import React from 'react';
 import axios from 'axios';
-import styles from './App.module.css';
+// import styles from './App.module.css';
+import styled from  'styled-components';
+
+const StyledContainer = styled.div `
+  height: 100vw;
+  padding: 20 px;
+
+  background: #83a4d4;
+  background: linear-gradient(to left, #b6fbff, #83a4d4);
+
+  color: #171212
+`;
+
+const StyledHealinePrimary = styled.h1 `
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 2px;
+`;
+
+const StyledItem = styled.div `
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+`;
+
+const StyledColumn = styled.span `
+  padding: 0 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  a {
+    color: inherit;
+  }
+
+  width: ${props => props.width};
+
+`;
+
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -102,23 +141,25 @@ const App = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.headlinePrimary}>My Hacker Stories</h1>
+    <StyledContainer>
+
+      <StyledHealinePrimary>My Hacker Stories</StyledHealinePrimary>
 
       <SearchForm
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
-      />
+        />
 
       {stories.isError && <p>Something went wrong ...</p>}
 
       {stories.isLoading ? (
         <p>Loading ...</p>
-      ) : (
-        <List list={stories.data} onRemoveItem={handleRemoveStory} />
-      )}
-    </div>
+        ) : (
+          <List list={stories.data} onRemoveItem={handleRemoveStory} />
+          )}
+      </StyledContainer>
+    
   );
 };
 
@@ -191,23 +232,41 @@ const List = ({ list, onRemoveItem }) =>
   ));
 
 const Item = ({ item, onRemoveItem }) => (
-  <div className={styles.item}>
-    <span style={{ width: '40%' }}>
+  <StyledItem>
+    <StyledColumn width="40%">
       <a href={item.url}>{item.title}</a>
-    </span>
-    <span style={{ width: '30%' }}>{item.author}</span>
-    <span style={{ width: '10%' }}>{item.num_comments}</span>
-    <span style={{ width: '10%' }}>{item.points}</span>
-    <span style={{ width: '10%' }}>
-      <button
-        type="button"
-        onClick={() => onRemoveItem(item)}
-        className={`${styles.button} ${styles.buttonSmall}`}
-      >
+    </StyledColumn>
+      <StyledColumn width="30%">{item.author}</StyledColumn> 
+      <StyledColumn width="10%">{item.num_comments}</StyledColumn> 
+      <StyledColumn width="10%">{item.points}</StyledColumn> 
+      <StyledColumn width="10%">
+        <StyledButtonSmall
+          type="button"
+          onClick={() => onRemoveItem(item)}
+        >
         Dismiss
-      </button>
-    </span>
-  </div>
+        </StyledButtonSmall>
+    </StyledColumn>
+  </StyledItem>
+
+
+  // <div className={styles.item}>
+  //   <span style={{ width: '40%' }}>
+  //     <a href={item.url}>{item.title}</a>
+  //   </span>
+  //   <span style={{ width: '30%' }}>{item.author}</span>
+  //   <span style={{ width: '10%' }}>{item.num_comments}</span>
+  //   <span style={{ width: '10%' }}>{item.points}</span>
+  //   <span style={{ width: '10%' }}>
+  //     <button
+  //       type="button"
+  //       onClick={() => onRemoveItem(item)}
+  //       className={`${styles.button} ${styles.buttonSmall}`}
+  //     >
+  //       Dismiss
+  //     </button>
+  //   </span>
+  // </div>
 );
 
 
